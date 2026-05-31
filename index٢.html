@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Final Exam – Study Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #f78166;
+    --accent3: #3fb950;
+    --accent4: #d2a8ff;
+    --accent5: #ffa657;
+    --text: #e6edf3;
+    --text2: #8b949e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0 0 60px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 40%, #1a1f35 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 32px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(88,166,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-size: 2.2rem; font-weight: 900;
+    background: linear-gradient(90deg, var(--accent), var(--accent4));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .hero p { color: var(--text2); font-size: 1rem; }
+  .badge-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 14px; font-size: 0.82rem; color: var(--text2); }
+  .badge.hi { border-color: var(--accent); color: var(--accent); }
+
+  .nav-tabs {
+    display: flex; gap: 0; overflow-x: auto;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 24px; position: sticky; top: 0; z-index: 100;
+  }
+  .nav-tab {
+    padding: 14px 20px; cursor: pointer; white-space: nowrap;
+    color: var(--text2); font-size: 0.9rem; font-weight: 600;
+    border-bottom: 2px solid transparent; transition: all .2s;
+    user-select: none;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .hint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:640px){ .hint-grid { grid-template-columns: 1fr; } }
+
+  .hint-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px;
+    border-top: 3px solid var(--accent);
+    transition: transform .2s;
+  }
+  .hint-card:hover { transform: translateY(-2px); }
+  .hint-card.orange { border-top-color: var(--accent5); }
+  .hint-card.green { border-top-color: var(--accent3); }
+  .hint-card.purple { border-top-color: var(--accent4); }
+  .hint-card.red { border-top-color: var(--accent2); }
+
+  .hint-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+  .hint-card .loc { font-size: 0.8rem; color: var(--text2); margin-bottom: 10px; }
+  .tag { display: inline-block; font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; margin-right: 4px; font-weight: 600; }
+  .tag.lec { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .tag.note { background: rgba(63,185,80,0.15); color: var(--accent3); }
+  .type-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .type-badge { font-size: 0.75rem; padding: 2px 10px; border-radius: 10px; font-weight: 600; }
+  .type-badge.trace { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .type-badge.write { background: rgba(63,185,80,0.15); color: var(--accent3); }
+  .type-badge.mcq { background: rgba(210,168,255,0.15); color: var(--accent4); }
+  .type-badge.concept { background: rgba(255,166,87,0.15); color: var(--accent5); }
+
+  .topic-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 24px; overflow: hidden; }
+  .topic-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .topic-header:hover { background: #2d333b; }
+  .topic-icon { font-size: 1.3rem; }
+  .topic-header h2 { font-size: 1.05rem; font-weight: 700; flex: 1; }
+  .topic-header .chevron { color: var(--text2); transition: transform .2s; }
+  .topic-body { padding: 20px; }
+  .topic-block.collapsed .topic-body { display: none; }
+  .topic-block.collapsed .chevron { transform: rotate(-90deg); }
+
+  pre, code { font-family: 'Fira Code', monospace; }
+  pre { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 16px; overflow-x: auto; font-size: 0.85rem; line-height: 1.6; margin: 12px 0; }
+  code { background: rgba(88,166,255,0.1); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-size: 0.88em; }
+
+  .note { background: rgba(255,166,87,0.08); border: 1px solid rgba(255,166,87,0.3); border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 0.88rem; color: var(--accent5); }
+  .note::before { content: '⚠ '; font-weight: bold; }
+  .important { background: rgba(88,166,255,0.08); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 10px 0; font-size: 0.88rem; border-radius: 0 6px 6px 0; }
+
+  ul.points { padding-left: 20px; }
+  ul.points li { margin-bottom: 6px; font-size: 0.93rem; }
+
+  .table-wrap { overflow-x: auto; margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+  th { background: var(--surface2); color: var(--accent); padding: 10px 14px; text-align: left; border: 1px solid var(--border); }
+  td { padding: 8px 14px; border: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  h4 { font-size: 0.95rem; font-weight: 700; margin: 16px 0 8px; color: var(--accent4); }
+
+  .exam-header { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 28px; border-top: 3px solid var(--accent); }
+  .exam-header h2 { margin-bottom: 8px; }
+  .exam-header p { color: var(--text2); font-size: 0.9rem; }
+  .score-bar { margin-top: 14px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .score-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; text-align: center; }
+  .score-item .num { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+  .score-item .lbl { font-size: 0.75rem; color: var(--text2); }
+
+  .q-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  .q-block .q-num { font-size: 0.75rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .q-block .q-text { font-size: 0.97rem; font-weight: 600; margin-bottom: 14px; }
+
+  .mcq-options { display: flex; flex-direction: column; gap: 8px; }
+  .mcq-opt { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; cursor: pointer; font-size: 0.9rem; transition: all .15s; user-select: none; }
+  .mcq-opt:hover { border-color: var(--accent); background: rgba(88,166,255,0.07); }
+  .mcq-opt.correct { border-color: var(--accent3); background: rgba(63,185,80,0.12); color: var(--accent3); }
+  .mcq-opt.wrong { border-color: var(--accent2); background: rgba(218,54,51,0.1); color: var(--accent2); }
+
+  .answer-reveal { margin-top: 12px; }
+  .show-answer-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); border-radius: 6px; padding: 7px 16px; cursor: pointer; font-size: 0.85rem; font-family: 'Inter', sans-serif; transition: all .15s; }
+  .show-answer-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .answer-box { display: none; margin-top: 10px; background: rgba(63,185,80,0.06); border: 1px solid rgba(63,185,80,0.3); border-radius: 8px; padding: 14px; }
+  .answer-box.visible { display: block; }
+  .answer-box .ans-label { font-size: 0.78rem; color: var(--accent3); font-weight: 700; margin-bottom: 6px; }
+
+  .write-area { width: 100%; background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--text); font-family: 'Fira Code', monospace; font-size: 0.85rem; resize: vertical; min-height: 100px; margin: 10px 0; }
+  .write-area:focus { outline: none; border-color: var(--accent); }
+
+  .submit-all-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--accent), var(--accent4)); color: #0d1117; border: none; border-radius: 10px; padding: 16px; font-size: 1.1rem; font-weight: 900; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 24px; transition: opacity .2s; }
+  .submit-all-btn:hover { opacity: 0.88; }
+
+  .final-score { display: none; text-align: center; padding: 32px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-top: 24px; }
+  .final-score.show { display: block; }
+  .final-score .big-num { font-size: 3rem; font-weight: 900; color: var(--accent); }
+  .final-score p { color: var(--text2); margin-top: 6px; }
+
+  .saved-badge { display: none; background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.3); color: var(--accent3); border-radius: 6px; padding: 4px 12px; font-size: 0.8rem; margin-top: 8px; }
+  .saved-badge.show { display: inline-block; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🐍 Python Final Exam – Study Guide</h1>
+  <p>Modern Applications Development | Hint Map + Summary + Mock Exam</p>
+  <div class="badge-row">
+    <span class="badge hi">MCQ</span>
+    <span class="badge hi">Trace Codes</span>
+    <span class="badge hi">Reduce Codes</span>
+    <span class="badge hi">Write Codes</span>
+    <span class="badge">Threading</span>
+    <span class="badge">Flask</span>
+    <span class="badge">Generators</span>
+    <span class="badge">JSON</span>
+    <span class="badge">Built-in Functions</span>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showSection('hints', this)">🗺 Hint Map</div>
+  <div class="nav-tab" onclick="showSection('summary', this)">📖 Summary</div>
+  <div class="nav-tab" onclick="showSection('exam', this)">📝 Mock Exam</div>
+</div>
+
+<!-- HINTS -->
+<div class="section active" id="hints">
+  <div class="container">
+    <div style="margin-bottom:24px;">
+      <h2 style="font-size:1.2rem;margin-bottom:6px;">Hint Map – Topics & Locations</h2>
+      <p style="color:var(--text2);font-size:0.9rem;">Each card shows the hint topic, where it is in the lectures/notes, and the expected question type.</p>
+    </div>
+    <div class="hint-grid">
+
+      <div class="hint-card">
+        <h3>🔄 Threading & Async I/O</h3>
+        <div class="loc">
+          <span class="tag lec">Lecture #10</span>
+          <span class="tag note">Race condition and locking.pdf</span>
+          <span class="tag note">Asynchronous methods and process_v2.pdf</span>
+        </div>
+        <div class="type-badges">
+          <span class="type-badge trace">Trace Code</span>
+          <span class="type-badge write">Write Code</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">Trace threading code with locks, understand race conditions, write async/await with event loop.</p>
+      </div>
+
+      <div class="hint-card orange">
+        <h3>📝 Logging</h3>
+        <div class="loc"><span class="tag lec">Lecture #11</span></div>
+        <div class="type-badges">
+          <span class="type-badge mcq">MCQ</span>
+          <span class="type-badge concept">General Concept</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">Logging levels (DEBUG→CRITICAL), difference between logging and print, basicConfig setup.</p>
+      </div>
+
+      <div class="hint-card green">
+        <h3>🧪 Testing</h3>
+        <div class="loc"><span class="tag lec">Lecture #11</span></div>
+        <div class="type-badges">
+          <span class="type-badge mcq">MCQ</span>
+          <span class="type-badge concept">General Concept</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">unittest, assertEqual, assertTrue, Unit Testing vs Integration Testing.</p>
+      </div>
+
+      <div class="hint-card purple">
+        <h3>🌐 Flask</h3>
+        <div class="loc"><span class="tag lec">Lecture #12</span></div>
+        <div class="type-badges">
+          <span class="type-badge trace">Trace Code</span>
+          <span class="type-badge write">Write Code</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">Write Flask APIs (GET, POST, PUT, DELETE), understand @app.route, jsonify, request.get_json().</p>
+      </div>
+
+      <div class="hint-card red">
+        <h3>⚡ Generators</h3>
+        <div class="loc">
+          <span class="tag lec">Lecture #5/#6</span>
+          <span class="tag note">Generator (2).pdf</span>
+        </div>
+        <div class="type-badges">
+          <span class="type-badge trace">Trace Code</span>
+          <span class="type-badge write">Write Code</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">yield keyword, __next__(), StopIteration, trace generator output step by step.</p>
+      </div>
+
+      <div class="hint-card">
+        <h3>📦 JSON</h3>
+        <div class="loc"><span class="tag lec">Lecture #9</span></div>
+        <div class="type-badges">
+          <span class="type-badge write">Write Code</span>
+          <span class="type-badge trace">Trace Code</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">json.load() for reading, json.dumps() for writing, Python dict ↔ JSON conversion.</p>
+      </div>
+
+      <div class="hint-card orange">
+        <h3>🗂 Data Structures Methods</h3>
+        <div class="loc">
+          <span class="tag lec">Lecture #3, #4</span>
+          <span class="tag note">Multiple Assignments.pdf</span>
+          <span class="tag note">Slicing in Python.pdf</span>
+        </div>
+        <div class="type-badges">
+          <span class="type-badge trace">Trace Code</span>
+          <span class="type-badge mcq">MCQ</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">List/Dict/Set methods, Slicing, Multiple Assignment, __hash__ for sets.</p>
+      </div>
+
+      <div class="hint-card green">
+        <h3>🔧 Built-in Functions</h3>
+        <div class="loc"><span class="tag lec">Lecture #10</span></div>
+        <div class="type-badges">
+          <span class="type-badge trace">Trace Code</span>
+          <span class="type-badge write">Write Code</span>
+          <span class="type-badge mcq">MCQ</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">map, filter, zip, min, max, sum – how to write and trace results.</p>
+      </div>
+
+      <div class="hint-card purple">
+        <h3>🔤 String Methods</h3>
+        <div class="loc"><span class="tag lec">Lecture #2, #3</span></div>
+        <div class="type-badges">
+          <span class="type-badge trace">Trace Code</span>
+          <span class="type-badge mcq">MCQ</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">upper, lower, split, strip, find, replace, islower, isupper.</p>
+      </div>
+
+      <div class="hint-card">
+        <h3>🧩 Function Definition & Calls</h3>
+        <div class="loc">
+          <span class="tag lec">Lecture #2</span>
+          <span class="tag note">Method Signatures.pdf</span>
+          <span class="tag note">Starred argument.pdf</span>
+          <span class="tag note">Double starred arguments.pdf</span>
+        </div>
+        <div class="type-badges">
+          <span class="type-badge trace">Trace Code</span>
+          <span class="type-badge write">Write Code</span>
+          <span class="type-badge mcq">MCQ</span>
+        </div>
+        <p style="font-size:0.83rem;color:var(--text2);margin-top:10px;">*args, **kwargs, default values, positional vs keyword arguments, lambda.</p>
+      </div>
+
+    </div>
+
+    <div style="margin-top:32px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:3px solid var(--accent2);">
+      <h3 style="margin-bottom:10px;color:var(--accent2);">⚠️ Important Note from the Professor</h3>
+      <p style="font-size:0.9rem;">The exam is <strong>comprehensive</strong> but the hints indicate higher-focus topics. Exam includes: MCQ, Trace Codes, Reduce Codes, Write Codes. <strong>No questions about hints will be answered.</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="section" id="summary">
+  <div class="container">
+
+    <div class="topic-block" id="t1">
+      <div class="topic-header" onclick="toggleTopic('t1')">
+        <span class="topic-icon">🔄</span>
+        <h2>Threading & Async I/O</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Lec #10 + Notes</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>Thread Basics</h4>
+        <ul class="points">
+          <li>Threading allows different parts of a program to run concurrently.</li>
+          <li>Best for I/O-bound tasks (waiting for files/network), not CPU-bound.</li>
+        </ul>
+        <pre>import threading
+
+def task(name):
+    print(f"Thread {name} running")
+
+t1 = threading.Thread(target=task, args=("T1",))
+t2 = threading.Thread(target=task, args=("T2",))
+t1.start()
+t2.start()
+t1.join()   # wait for t1 to finish
+t2.join()</pre>
+
+        <h4>Race Condition</h4>
+        <div class="note">Occurs when two or more threads access shared data simultaneously → unpredictable result.</div>
+        <h4>Solution: Lock</h4>
+        <pre>lock = threading.Lock()
+
+def withdraw(amount, lock):
+    lock.acquire()
+    global balance
+    balance -= amount
+    lock.release()</pre>
+
+        <h4>Async I/O – Event Loop</h4>
+        <ul class="points">
+          <li><code>async def func():</code> → coroutine function</li>
+          <li><code>await expr</code> → pause and let the event loop run another task</li>
+          <li><code>asyncio.create_task(coro)</code> → wraps a coroutine into a task</li>
+        </ul>
+        <pre>import asyncio
+
+async def task1():
+    print("Start task1")
+    await asyncio.sleep(1)
+    print("End task1")
+
+async def main():
+    t1 = asyncio.create_task(task1())
+    t2 = asyncio.create_task(task1())
+    await t1
+    await t2
+
+asyncio.run(main())</pre>
+      </div>
+    </div>
+
+    <div class="topic-block collapsed" id="t2">
+      <div class="topic-header" onclick="toggleTopic('t2')">
+        <span class="topic-icon">📝</span>
+        <h2>Logging</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Lec #11</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>Why Logging?</h4>
+        <ul class="points">
+          <li>Tracks events when the program runs.</li>
+          <li>Better than print for complex programs.</li>
+          <li>Can save logs to a file.</li>
+        </ul>
+        <h4>Logging Levels (lowest to highest)</h4>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Level</th><th>Number</th><th>Use</th></tr>
+            <tr><td>DEBUG</td><td>10</td><td>Detailed diagnostic info</td></tr>
+            <tr><td>INFO</td><td>20</td><td>General program flow</td></tr>
+            <tr><td>WARNING</td><td>30</td><td>Something unexpected happened</td></tr>
+            <tr><td>ERROR</td><td>40</td><td>A serious problem occurred</td></tr>
+            <tr><td>CRITICAL</td><td>50</td><td>Fatal error – may stop the program</td></tr>
+          </table>
+        </div>
+        <h4>Basic Example</h4>
+        <pre>import logging
+
+logging.basicConfig(
+    filename='app.log',
+    filemode='a',
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.DEBUG
+)
+
+logging.debug("debug message")
+logging.info("info message")
+logging.warning("warning message")
+logging.error("error message")
+logging.critical("critical message")</pre>
+        <h4>Custom Logger per Module</h4>
+        <pre>logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler = logging.FileHandler('module.log')
+handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+logger.addHandler(handler)</pre>
+      </div>
+    </div>
+
+    <div class="topic-block collapsed" id="t3">
+      <div class="topic-header" onclick="toggleTopic('t3')">
+        <span class="topic-icon">🧪</span>
+        <h2>Testing (unittest)</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Lec #11</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>Unit vs Integration Testing</h4>
+        <ul class="points">
+          <li><strong>Unit Testing:</strong> Tests each function/class individually.</li>
+          <li><strong>Integration Testing:</strong> Tests the interaction between different parts.</li>
+        </ul>
+        <h4>unittest Structure</h4>
+        <pre>import unittest
+
+class TestMyFunc(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(2 + 3, 5)
+
+    def test_negative(self):
+        self.assertTrue(-1 < 0)
+
+if __name__ == '__main__':
+    unittest.main()</pre>
+        <h4>Key Assertion Methods</h4>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Method</th><th>Description</th></tr>
+            <tr><td><code>assertEqual(a, b)</code></td><td>Check a == b</td></tr>
+            <tr><td><code>assertTrue(x)</code></td><td>Check x is True</td></tr>
+            <tr><td><code>assertFalse(x)</code></td><td>Check x is False</td></tr>
+            <tr><td><code>assertIn(a, b)</code></td><td>Check a is in b</td></tr>
+            <tr><td><code>assertRaises(Exc, func)</code></td><td>Check func raises exception</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-block collapsed" id="t4">
+      <div class="topic-header" onclick="toggleTopic('t4')">
+        <span class="topic-icon">🌐</span>
+        <h2>Flask API</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Lec #12</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>CRUD with Flask</h4>
+        <pre>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+db = [{"id": 1, "name": "Ali"}]
+
+@app.get("/students")
+def get_all():
+    return jsonify(db)
+
+@app.post("/students")
+def add():
+    if request.is_json:
+        s = request.get_json()
+        db.append(s)
+        return s, 201
+    return {"error": "Must be JSON"}, 415
+
+@app.put("/students")
+def update():
+    if request.is_json:
+        s = request.get_json()
+        for i in db:
+            if i["id"] == s["id"]:
+                db.remove(i)
+                break
+        db.append(s)
+        return s, 201
+
+@app.delete("/students")
+def delete():
+    if request.is_json:
+        s = request.get_json()
+        for i in db:
+            if i["id"] == s["id"]:
+                db.remove(i)
+                break
+        return s, 201
+
+if __name__ == "__main__":
+    app.run(debug=True)</pre>
+        <div class="important">HTTP Status Codes: 200=OK, 201=Created, 415=Unsupported Media Type, 404=Not Found</div>
+      </div>
+    </div>
+
+    <div class="topic-block collapsed" id="t5">
+      <div class="topic-header" onclick="toggleTopic('t5')">
+        <span class="topic-icon">⚡</span>
+        <h2>Generators</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Generator (2).pdf</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>Core Rules</h4>
+        <ul class="points">
+          <li>Any function containing <code>yield</code> is a Generator.</li>
+          <li>Calling the function returns a Generator Object (does not execute code yet).</li>
+          <li><code>__next__()</code> executes until the first <code>yield</code> then pauses.</li>
+          <li>When code ends → <code>StopIteration</code> is raised automatically.</li>
+          <li>Can be used directly in a for loop.</li>
+        </ul>
+        <h4>Trace Example</h4>
+        <pre>def gen(a, b):
+    print(a, "before first yield")
+    yield 2
+    print(b, "before second yield")
+    yield 3
+    print("last line")
+
+G = gen(1, 2)
+for i in G:
+    print(i)</pre>
+        <div class="important">
+          Output:<br>
+          1 before first yield<br>
+          2<br>
+          2 before second yield<br>
+          3<br>
+          last line
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-block collapsed" id="t6">
+      <div class="topic-header" onclick="toggleTopic('t6')">
+        <span class="topic-icon">📦</span>
+        <h2>JSON</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Lec #9</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>Reading a JSON file</h4>
+        <pre>import json
+
+f = open('data.json', 'r')
+data = json.load(f)   # returns Python dict/list
+for item in data['students']:
+    print(item['name'])
+f.close()</pre>
+        <h4>Writing a JSON file</h4>
+        <pre>import json
+
+dic = {"name": "Ali", "age": 22, "skills": ["python", "java"]}
+json_str = json.dumps(dic, indent=4)   # dict → JSON string
+f = open('output.json', 'w')
+f.write(json_str)
+f.close()</pre>
+        <h4>Python ↔ JSON Conversion Table</h4>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Python</th><th>JSON</th></tr>
+            <tr><td>dict</td><td>Object {}</td></tr>
+            <tr><td>list / tuple</td><td>Array []</td></tr>
+            <tr><td>str</td><td>String</td></tr>
+            <tr><td>int / float</td><td>Number</td></tr>
+            <tr><td>True</td><td>true</td></tr>
+            <tr><td>False</td><td>false</td></tr>
+            <tr><td>None</td><td>null</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-block collapsed" id="t7">
+      <div class="topic-header" onclick="toggleTopic('t7')">
+        <span class="topic-icon">🔧</span>
+        <h2>Built-in Functions: map, filter, zip, min, max, sum</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Lec #10</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>map(func, iterable)</h4>
+        <pre>nums = [1, 2, 3, 4]
+result = list(map(lambda x: x * 2, nums))
+# [2, 4, 6, 8]
+
+result = list(map(lambda x, y: x + y, [1,2,3], [4,5,6]))
+# [5, 7, 9]</pre>
+
+        <h4>filter(func, iterable)</h4>
+        <pre>nums = [1, 2, 3, 4, 5, 6]
+evens = list(filter(lambda x: x % 2 == 0, nums))
+# [2, 4, 6]</pre>
+
+        <h4>zip(iter1, iter2)</h4>
+        <pre>names = ["Ali", "Sara"]
+grades = [90, 85]
+result = list(zip(names, grades))
+# [('Ali', 90), ('Sara', 85)]</pre>
+
+        <h4>min, max, sum</h4>
+        <pre>nums = [3, 1, 4, 1, 5, 9]
+print(min(nums))  # 1
+print(max(nums))  # 9
+print(sum(nums))  # 23</pre>
+
+        <h4>Lambda</h4>
+        <pre>add = lambda x, y: x + y
+print(add(3, 4))  # 7</pre>
+      </div>
+    </div>
+
+    <div class="topic-block collapsed" id="t8">
+      <div class="topic-header" onclick="toggleTopic('t8')">
+        <span class="topic-icon">🗂</span>
+        <h2>Data Structures Methods</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Lec #3, #4 + Notes</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>List Methods</h4>
+        <pre>lst = [3, 1, 4, 1, 5]
+lst.append(9)      # add to end
+lst.insert(1, 7)   # insert at index 1
+lst.remove(1)      # remove first occurrence of 1
+lst.pop()          # remove and return last element
+lst.sort()         # sort in place
+lst.reverse()      # reverse in place
+lst.index(4)       # find index of 4</pre>
+
+        <h4>Dictionary Methods</h4>
+        <pre>d = {"name": "Ali", "age": 22}
+d.keys()    # dict_keys(['name', 'age'])
+d.values()  # dict_values(['Ali', 22])
+d.items()   # dict_items([('name','Ali'), ('age',22)])
+d.get("name")   # 'Ali'
+d.pop("age")    # removes and returns value</pre>
+
+        <h4>Slicing – General Form</h4>
+        <pre>s = [0, 1, 2, 3, 4, 5]
+s[1:4]    # [1, 2, 3]
+s[::2]    # [0, 2, 4]
+s[::-1]   # [5, 4, 3, 2, 1, 0]  reverse</pre>
+        <div class="note">Rule: s[i:j:k] → chosen indices are i, i+k, i+2k, ... while &lt; j</div>
+
+        <h4>Multiple Assignment</h4>
+        <pre>name, grade, email = ["Ali", 4.5, "ali@ksu.edu.sa"]
+# number of variables must exactly match list length</pre>
+      </div>
+    </div>
+
+    <div class="topic-block collapsed" id="t9">
+      <div class="topic-header" onclick="toggleTopic('t9')">
+        <span class="topic-icon">🧩</span>
+        <h2>Function Definition & Calls</h2>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:auto;margin-right:12px">Lec #2 + Notes</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="topic-body">
+        <h4>Positional vs Keyword Arguments</h4>
+        <pre>def func(a, b, c=2):
+    print(a, b, c)
+
+func(1, 2, 5)          # a=1, b=2, c=5
+func(1, c=5, b=2)      # a=1, b=2, c=5
+func(1, 2)             # a=1, b=2, c=2 (default)
+# func(1) → ERROR! b has no default value</pre>
+        <div class="note">A positional argument cannot come after a keyword argument</div>
+
+        <h4>*args and **kwargs</h4>
+        <pre>def func(*args):         # tuple of all positional args
+    print(args)
+
+def func2(**kwargs):     # dict of all keyword args
+    print(kwargs)
+
+lst = [1, 2, 3]
+func(*lst)   # same as func(1, 2, 3)
+
+d = {"b": 20, "c": 10}
+def f(a, b, c): print(a, b, c)
+f(1, **d)    # same as f(1, b=20, c=10)</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXAM -->
+<div class="section" id="exam">
+  <div class="container">
+    <div class="exam-header">
+      <h2>📝 Mock Exam</h2>
+      <p>Simulates the real exam format: MCQ + Trace + Write Codes<br>Covering all hinted topics. Your score is saved in your browser.</p>
+      <div class="score-bar">
+        <div class="score-item"><div class="num">10</div><div class="lbl">MCQ</div></div>
+        <div class="score-item"><div class="num">5</div><div class="lbl">Trace Codes</div></div>
+        <div class="score-item"><div class="num">5</div><div class="lbl">Write Codes</div></div>
+        <div class="score-item"><div class="num" id="savedScoreDisplay">—</div><div class="lbl">Your Saved Score</div></div>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:16px;color:var(--accent4);">Part A – MCQ (Choose the correct answer)</h3>
+
+    <div class="q-block" id="q1">
+      <div class="q-num">Question 1 – MCQ</div>
+      <div class="q-text">Which logging level is used to record fatal errors that may stop the program?</div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q1','a','d')">A) ERROR</div>
+        <div class="mcq-opt" onclick="selectMCQ('q1','b','d')">B) WARNING</div>
+        <div class="mcq-opt" onclick="selectMCQ('q1','c','d')">C) DEBUG</div>
+        <div class="mcq-opt" onclick="selectMCQ('q1','d','d')">D) CRITICAL</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q2">
+      <div class="q-num">Question 2 – MCQ</div>
+      <div class="q-text">What is the output?<br><code>list(map(lambda x: x**2, [1, 2, 3, 4]))</code></div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q2','a','b')">A) [1, 4, 9]</div>
+        <div class="mcq-opt" onclick="selectMCQ('q2','b','b')">B) [1, 4, 9, 16]</div>
+        <div class="mcq-opt" onclick="selectMCQ('q2','c','b')">C) [2, 4, 6, 8]</div>
+        <div class="mcq-opt" onclick="selectMCQ('q2','d','b')">D) (1, 4, 9, 16)</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q3">
+      <div class="q-num">Question 3 – MCQ</div>
+      <div class="q-text">What is the main purpose of <code>lock.acquire()</code> in threading?</div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q3','a','a')">A) Prevents other threads from entering the critical section until the lock is released</div>
+        <div class="mcq-opt" onclick="selectMCQ('q3','b','a')">B) Stops the entire program</div>
+        <div class="mcq-opt" onclick="selectMCQ('q3','c','a')">C) Creates a new thread</div>
+        <div class="mcq-opt" onclick="selectMCQ('q3','d','a')">D) Deletes the shared variable</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q4">
+      <div class="q-num">Question 4 – MCQ</div>
+      <div class="q-text">Which of the following correctly describes a Generator?</div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q4','a','c')">A) A function that returns a complete list at once</div>
+        <div class="mcq-opt" onclick="selectMCQ('q4','b','c')">B) A function that takes no parameters</div>
+        <div class="mcq-opt" onclick="selectMCQ('q4','c','c')">C) A function containing yield that returns a Generator Object when called</div>
+        <div class="mcq-opt" onclick="selectMCQ('q4','d','c')">D) A type of loop</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q5">
+      <div class="q-num">Question 5 – MCQ</div>
+      <div class="q-text">In Flask, which decorator handles HTTP POST requests?</div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q5','a','c')">A) @app.route("/", method="post")</div>
+        <div class="mcq-opt" onclick="selectMCQ('q5','b','c')">B) @app.request.post("/")</div>
+        <div class="mcq-opt" onclick="selectMCQ('q5','c','c')">C) @app.post("/")</div>
+        <div class="mcq-opt" onclick="selectMCQ('q5','d','c')">D) @flask.post("/")</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q6">
+      <div class="q-num">Question 6 – MCQ</div>
+      <div class="q-text">What is the output?
+<pre style="margin:8px 0;">s = [0, 1, 2, 3, 4, 5]
+print(s[1:5:2])</pre></div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q6','a','b')">A) [1, 2, 3, 4]</div>
+        <div class="mcq-opt" onclick="selectMCQ('q6','b','b')">B) [1, 3]</div>
+        <div class="mcq-opt" onclick="selectMCQ('q6','c','b')">C) [0, 2, 4]</div>
+        <div class="mcq-opt" onclick="selectMCQ('q6','d','b')">D) [1, 3, 5]</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q7">
+      <div class="q-num">Question 7 – MCQ</div>
+      <div class="q-text">What is the JSON equivalent of Python's <code>None</code>?</div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q7','a','d')">A) false</div>
+        <div class="mcq-opt" onclick="selectMCQ('q7','b','d')">B) undefined</div>
+        <div class="mcq-opt" onclick="selectMCQ('q7','c','d')">C) 0</div>
+        <div class="mcq-opt" onclick="selectMCQ('q7','d','d')">D) null</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q8">
+      <div class="q-num">Question 8 – MCQ</div>
+      <div class="q-text">Which type of testing checks how different parts of the system work together?</div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q8','a','b')">A) Unit Testing</div>
+        <div class="mcq-opt" onclick="selectMCQ('q8','b','b')">B) Integration Testing</div>
+        <div class="mcq-opt" onclick="selectMCQ('q8','c','b')">C) Manual Testing</div>
+        <div class="mcq-opt" onclick="selectMCQ('q8','d','b')">D) Regression Testing</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q9">
+      <div class="q-num">Question 9 – MCQ</div>
+      <div class="q-text">What does <code>filter(None, lst)</code> do?</div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q9','a','a')">A) Removes all falsy values (0, empty, None) from the list</div>
+        <div class="mcq-opt" onclick="selectMCQ('q9','b','a')">B) Returns nothing</div>
+        <div class="mcq-opt" onclick="selectMCQ('q9','c','a')">C) Returns the list unchanged</div>
+        <div class="mcq-opt" onclick="selectMCQ('q9','d','a')">D) Raises an error</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q10">
+      <div class="q-num">Question 10 – MCQ</div>
+      <div class="q-text">What does <code>t1.join()</code> do?</div>
+      <div class="mcq-options">
+        <div class="mcq-opt" onclick="selectMCQ('q10','a','c')">A) Creates a new thread</div>
+        <div class="mcq-opt" onclick="selectMCQ('q10','b','c')">B) Immediately stops t1</div>
+        <div class="mcq-opt" onclick="selectMCQ('q10','c','c')">C) Waits for t1 to finish before continuing</div>
+        <div class="mcq-opt" onclick="selectMCQ('q10','d','c')">D) Restarts t1</div>
+      </div>
+    </div>
+
+    <h3 style="margin:32px 0 16px;color:var(--accent4);">Part B – Trace Codes (What is the output?)</h3>
+
+    <div class="q-block">
+      <div class="q-num">Question 11 – Trace Code</div>
+      <div class="q-text">What is the complete output of this code?</div>
+      <pre>def my_gen(n):
+    i = 0
+    while i < n:
+        print("before yield", i)
+        yield i * 2
+        i += 1
+    print("generator done")
+
+G = my_gen(3)
+for val in G:
+    print("got:", val)</pre>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans11')">👁 Show Answer</button>
+        <div class="answer-box" id="ans11">
+          <div class="ans-label">✅ Correct Output</div>
+          <pre>before yield 0
+got: 0
+before yield 1
+got: 2
+before yield 2
+got: 4
+generator done</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">Question 12 – Trace Code</div>
+      <div class="q-text">What is the output?</div>
+      <pre>nums = [5, 3, 8, 1, 6, 2]
+
+result1 = list(filter(lambda x: x > 4, nums))
+result2 = list(map(lambda x: x + 10, result1))
+
+print(result1)
+print(result2)
+print(sum(result2))</pre>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans12')">👁 Show Answer</button>
+        <div class="answer-box" id="ans12">
+          <div class="ans-label">✅ Correct Output</div>
+          <pre>[5, 8, 6]
+[15, 18, 16]
+49</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">Question 13 – Trace Code</div>
+      <div class="q-text">What is the output? (threads finish in order of their sleep time)</div>
+      <pre>import threading, time
+
+results = []
+
+def task(n):
+    time.sleep(n * 0.01)
+    results.append(n * 2)
+
+t1 = threading.Thread(target=task, args=(3,))
+t2 = threading.Thread(target=task, args=(1,))
+t3 = threading.Thread(target=task, args=(2,))
+
+t1.start(); t2.start(); t3.start()
+t1.join(); t2.join(); t3.join()
+
+print(results)</pre>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans13')">👁 Show Answer</button>
+        <div class="answer-box" id="ans13">
+          <div class="ans-label">✅ Correct Output</div>
+          <pre>[2, 4, 6]</pre>
+          <p style="font-size:0.83rem;color:var(--text2);margin-top:8px;">t2 finishes first (sleep 0.01), then t3 (0.02), then t1 (0.03)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">Question 14 – Trace Code</div>
+      <div class="q-text">What does each line print?</div>
+      <pre>import json
+
+data = '{"name": "Ali", "scores": [90, 85, 95], "passed": true}'
+obj = json.loads(data)
+
+print(type(obj))
+print(obj["name"])
+print(max(obj["scores"]))
+print(obj["passed"])</pre>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans14')">👁 Show Answer</button>
+        <div class="answer-box" id="ans14">
+          <div class="ans-label">✅ Correct Output</div>
+          <pre>&lt;class 'dict'&gt;
+Ali
+95
+True</pre>
+          <p style="font-size:0.83rem;color:var(--text2);margin-top:8px;">json.loads() converts JSON string to Python dict. "true" becomes True (capital T)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">Question 15 – Trace Code</div>
+      <div class="q-text">What is the output?</div>
+      <pre>def func(a, b, c=10):
+    return a + b + c
+
+args = (1, 2)
+kwargs = {"c": 5}
+
+print(func(*args))
+print(func(*args, **kwargs))
+print(func(1, c=3, b=2))</pre>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans15')">👁 Show Answer</button>
+        <div class="answer-box" id="ans15">
+          <div class="ans-label">✅ Correct Output</div>
+          <pre>13
+8
+6</pre>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin:32px 0 16px;color:var(--accent4);">Part C – Write Codes</h3>
+
+    <div class="q-block">
+      <div class="q-num">Question 16 – Write Code</div>
+      <div class="q-text">Write a Generator function called <code>even_numbers(n)</code> that yields even numbers from 0 up to (but not including) n. Then use it in a for loop and print each value.</div>
+      <textarea class="write-area" placeholder="Write your code here..."></textarea>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans16')">👁 Show Model Answer</button>
+        <div class="answer-box" id="ans16">
+          <div class="ans-label">✅ Model Answer</div>
+          <pre>def even_numbers(n):
+    i = 0
+    while i < n:
+        if i % 2 == 0:
+            yield i
+        i += 1
+
+for num in even_numbers(10):
+    print(num)
+# Output: 0, 2, 4, 6, 8</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">Question 17 – Write Code</div>
+      <div class="q-text">Write a Flask API with two endpoints: GET /students (returns all students) and POST /students (adds a new student). Data is a list of dicts.</div>
+      <textarea class="write-area" placeholder="Write your code here..."></textarea>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans17')">👁 Show Model Answer</button>
+        <div class="answer-box" id="ans17">
+          <div class="ans-label">✅ Model Answer</div>
+          <pre>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+students = [
+    {"id": 1, "name": "Ali", "gpa": 3.8},
+    {"id": 2, "name": "Sara", "gpa": 3.5}
+]
+
+@app.get("/students")
+def get_students():
+    return jsonify(students)
+
+@app.post("/students")
+def add_student():
+    if request.is_json:
+        s = request.get_json()
+        students.append(s)
+        return s, 201
+    return {"error": "Request must be JSON"}, 415
+
+if __name__ == "__main__":
+    app.run(debug=True)</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">Question 18 – Write Code</div>
+      <div class="q-text">Write code that reads a JSON file called <code>students.json</code> (a list of students with name and gpa fields), then prints the names of students with gpa greater than 3.5.</div>
+      <textarea class="write-area" placeholder="Write your code here..."></textarea>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans18')">👁 Show Model Answer</button>
+        <div class="answer-box" id="ans18">
+          <div class="ans-label">✅ Model Answer</div>
+          <pre>import json
+
+f = open('students.json', 'r')
+data = json.load(f)
+f.close()
+
+high_gpa = list(filter(lambda s: s['gpa'] > 3.5, data))
+
+for student in high_gpa:
+    print(student['name'])</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">Question 19 – Write Code</div>
+      <div class="q-text">Write a thread-safe counter using threading. The <code>increment()</code> function increases the counter by 1. Use a Lock to avoid race conditions. Run two threads each calling increment() 100 times.</div>
+      <textarea class="write-area" placeholder="Write your code here..."></textarea>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans19')">👁 Show Model Answer</button>
+        <div class="answer-box" id="ans19">
+          <div class="ans-label">✅ Model Answer</div>
+          <pre>import threading
+
+counter = 0
+lock = threading.Lock()
+
+def increment():
+    global counter
+    for _ in range(100):
+        lock.acquire()
+        counter += 1
+        lock.release()
+
+t1 = threading.Thread(target=increment)
+t2 = threading.Thread(target=increment)
+
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+
+print("Final counter:", counter)  # should be 200</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-num">Question 20 – Reduce Code</div>
+      <div class="q-text">Rewrite this code using <code>map</code> and <code>filter</code> instead of for loops:
+<pre style="margin:10px 0;">numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+result = []
+for x in numbers:
+    if x % 2 == 0:
+        result.append(x * x)
+print(result)</pre></div>
+      <textarea class="write-area" placeholder="Write your code here..."></textarea>
+      <div class="answer-reveal">
+        <button class="show-answer-btn" onclick="toggleAnswer('ans20')">👁 Show Model Answer</button>
+        <div class="answer-box" id="ans20">
+          <div class="ans-label">✅ Model Answer</div>
+          <pre>numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+result = list(map(lambda x: x * x, filter(lambda x: x % 2 == 0, numbers)))
+print(result)
+# [4, 16, 36, 64, 100]</pre>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-all-btn" onclick="submitExam()">🎯 Submit & See My Score</button>
+
+    <div class="final-score" id="finalScore">
+      <div style="font-size:2rem;margin-bottom:8px;">🎓</div>
+      <div class="big-num" id="scoreNum">—</div>
+      <p id="scoreMsg"></p>
+      <span class="saved-badge show" id="savedBadge">💾 Score saved to your browser</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // --- Navigation ---
+  function showSection(id, el) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (el) el.classList.add('active');
+  }
+
+  function toggleTopic(id) {
+    document.getElementById(id).classList.toggle('collapsed');
+  }
+
+  // --- MCQ ---
+  const mcqCorrect = {};
+
+  function selectMCQ(qid, chosen, correct) {
+    const block = document.getElementById(qid);
+    const opts = block.querySelectorAll('.mcq-opt');
+    const letters = ['a','b','c','d'];
+    opts.forEach((opt, i) => {
+      opt.classList.remove('correct','wrong');
+      if (letters[i] === correct) opt.classList.add('correct');
+      else if (letters[i] === chosen && chosen !== correct) opt.classList.add('wrong');
+    });
+    mcqCorrect[qid] = (chosen === correct);
+    saveProgress();
+  }
+
+  // --- Answers ---
+  function toggleAnswer(id) {
+    document.getElementById(id).classList.toggle('visible');
+  }
+
+  // --- Score & localStorage ---
+  function submitExam() {
+    let correct = 0;
+    const total = 10;
+    for (let k in mcqCorrect) { if (mcqCorrect[k]) correct++; }
+    const pct = Math.round((correct / total) * 100);
+    const scoreStr = correct + ' / ' + total + ' MCQ correct';
+    document.getElementById('scoreNum').textContent = scoreStr;
+    document.getElementById('scoreMsg').textContent =
+      pct >= 70 ? '✅ Great job! Review trace and write sections to be fully ready.' :
+      pct >= 50 ? '⚠️ Good effort. Review the topics you missed in the Summary tab.' :
+      '❌ Study the Summary tab carefully before the exam.';
+    document.getElementById('finalScore').classList.add('show');
+    document.getElementById('finalScore').scrollIntoView({behavior:'smooth'});
+    localStorage.setItem('pythonFinalScore', scoreStr);
+    localStorage.setItem('pythonFinalDate', new Date().toLocaleDateString());
+    document.getElementById('savedScoreDisplay').textContent = correct + '/' + total;
+  }
+
+  function saveProgress() {
+    localStorage.setItem('pythonMCQAnswers', JSON.stringify(mcqCorrect));
+  }
+
+  function loadProgress() {
+    const saved = localStorage.getItem('pythonFinalScore');
+    if (saved) {
+      const parts = saved.match(/(\d+)\s*\/\s*(\d+)/);
+      if (parts) document.getElementById('savedScoreDisplay').textContent = parts[1] + '/' + parts[2];
+    }
+  }
+
+  loadProgress();
+</script>
+</body>
+</html>
